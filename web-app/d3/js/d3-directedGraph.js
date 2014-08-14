@@ -144,13 +144,12 @@ function cuentaconmigoChart() {
 
 $('input[name="type"]').change(function() {					
 	
-	var type = $(this).val();
-
-	//console.log($('#restURI').val() + "?type=" + type);
+	var type = $(this).val().split(':');
+	//console.log($('#restURI').val() + type[0] + "?type=" + type[1]);
 
 	//console.log("Start...");
-	$("#loading").html('<img width="200" height="200" alt="Wait a second..." src="/rs-peacemakers/static/images/spinner8.gif">');
-	d3.json($('#restURI').val() + "?type=" + type, graph);
+	$("#loading").html('<img width="200" height="200" alt="Espera un momento..." src="/rs-peacemakers/static/images/spinner8.gif">');
+	d3.json($('#restURI').val() + type[0] + "?type=" + type[1], graph);
 
 });
 
@@ -440,7 +439,7 @@ function graph(json) {
 				
 				d3.select("#tooltip")
 					.style("left", (50) + "px")
-					.style("top", (350) + "px");
+					.style("top", (200) + "px");
 		
 				var percentage = 0;
 				if (edgeSelected.result.percentage) {

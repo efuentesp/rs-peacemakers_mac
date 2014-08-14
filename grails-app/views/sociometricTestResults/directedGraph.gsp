@@ -138,125 +138,172 @@
 		<g:hiddenField id= "restURI" name="restURI" value="${restURI}" />
 		<g:hiddenField id= "photoURL" name="photoURL" value="${photoURL}" />
 		
-		<div>
+		<div class="row-fluid">
 		
-			<ul class="nav nav-tabs">
-				<g:each var="test" in="${sociometricTests}">
-				<g:each var="sociometricCriteria" in="${test.sociometricCriteria}">
-				<li <g:if test="${test == sociometricTest}"> class="active" </g:if>>
-					<a href="${createLink(uri: "/sociometricTestResults/directedGraph/${test.id}")}"><g:message code="${sociometricCriteria.code}" default="${sociometricCriteria.name}" /></a>
-				</li>							
-				</g:each>
-				</g:each>
-			</ul>
-
-			<g:set var="i" value="${0}" />
-			<div class="controlsXXX">
-				<fieldset id="type">
-
-					<g:each var="sociometricCriteria" in="${sociometricTest.sociometricCriteria}">
-					<!-- <p><g:message code="${sociometricCriteria.code}" default="${sociometricCriteria.name}" /></p> -->
-					<g:each var="sociometricCriteriaResponse" in="${sociometricCriteria.sociometricCriteriaResponses}">
-
-						
-						<label class="radio">
-							<input type="radio" name="type" id="type_${i}" value="${sociometricCriteriaResponse.question}">
-							<g:message code="${sociometricCriteriaResponse.question}" default="${sociometricCriteriaResponse.question}" />
-						</label>
-						
-						<g:set var="i" value="${i + 1}" />
-					</g:each>
-					</g:each>
-
-				</fieldset>
-			</div>
-			<div>
+			<div class="span3">
+			
 				<label class="checkbox">
 					<input id= "showNodeNames" type="checkbox"> <g:message code="sociogram.showNodeNames" default="Show Node Names" />
-				</label>				
-			</div>
+				</label>
 			
-			<div id="tooltip" class="hidden">
-				<div>
-					<p><strong><span id="groupmember_name">**</span></strong></p>
-					<img id="groupmember_photo" class="image-photo" style="display: block; margin-left: auto; margin-right: auto";/>
+				<g:set var="i" value="${0}" />
+				<div class="accordion" id="leftPanel">
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<a class="accordion-toggle" data-toggle="collapse" data-parent="#leftPanel" href="#collapseOne">
+								<g:message code="classmate_want" default="classmate_want" />
+							</a>
+						</div>
+						<div id="collapseOne" class="accordion-body collapse in">
+							<div class="accordion-inner">
+								<table class="table">
+									<g:each var="test" in="${sociometricTests}">
+										<g:if test="${test.sociometricCriteria.code == 'classmate_want'}">
+										<tbody>
+											<tr>
+												<td>
+													<strong>Votación ${test.sequence}</strong> <g:if test="${test.testBeginningDate()}"><span class="label label-success"><g:formatDate format="yyyy-MM-dd" date="${test.testBeginningDate()}"/></span></g:if><g:else><span class="label label-warning">Sin Votos</span></g:else>
+													<g:each var="sociometricCriteriaResponse" in="${test.sociometricCriteria.sociometricCriteriaResponses}">
+								
+														<label class="radio">
+															<input type="radio" name="type" id="type_${i}" value="${test.id}:${sociometricCriteriaResponse.question}" <g:if test="${!test.testBeginningDate()}">disabled</g:if> >
+															<g:message code="${sociometricCriteriaResponse.question}" default="${sociometricCriteriaResponse.question}" />
+														</label>
+														
+														<g:set var="i" value="${i + 1}" />
+													</g:each>
+												</td>
+											</tr>
+										</tbody>
+										</g:if>						
+									</g:each>
+								</table>
+							</div>
+						</div>
+					</div>
+					
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<a class="accordion-toggle" data-toggle="collapse" data-parent="#leftPanel" href="#collapseTwo">
+								<g:message code="classmate_guess" default="classmate_guess" />
+							</a>
+						</div>
+						<div id="collapseTwo" class="accordion-body collapse in">
+							<div class="accordion-inner">
+								<table class="table">
+									<g:each var="test" in="${sociometricTests}">
+										<g:if test="${test.sociometricCriteria.code == 'classmate_guess'}">
+										<tbody>
+											<tr>
+												<td>
+													<strong>Votación ${test.sequence}</strong> <g:if test="${test.testBeginningDate()}"><span class="label label-success"><g:formatDate format="yyyy-MM-dd" date="${test.testBeginningDate()}"/></span></g:if><g:else><span class="label label-warning">Sin Votos</span></g:else>
+													<g:each var="sociometricCriteriaResponse" in="${test.sociometricCriteria.sociometricCriteriaResponses}">
+								
+														<label class="radio">
+															<input type="radio" name="type" id="type_${i}" value="${test.id}:${sociometricCriteriaResponse.question}" <g:if test="${!test.testBeginningDate()}">disabled</g:if> >
+															<g:message code="${sociometricCriteriaResponse.question}" default="${sociometricCriteriaResponse.question}" />
+														</label>
+														
+														<g:set var="i" value="${i + 1}" />
+													</g:each>
+												</td>
+											</tr>
+										</tbody>
+										</g:if>						
+									</g:each>
+								</table>
+							</div>
+						</div>
+					</div>
 				</div>
-				<br>
-
-			    <div class="btn-group">
-				    <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
-					    Resultados
-					    <span class="caret"></span>
-				    </a>
-				    <ul class="dropdown-menu">
-						<li id="navBullying"><a id="bullying-chart">Bullying</a></li>
-						<li id="navBullymetric"><a id="bullymetric-chart">Bullymetrica</a></li>
-						<li id="navCompetency"><a id="competency-chart">Competencias</a></li>
-						<li id="navCuentaConmigo"><a id="cuentaconmigo-chart">Cuenta Conmigo</a></li>
-				    </ul>
-			    </div>
-			    <br>
+					
+			</div> <!-- span3 -->
+			
+			<div class="span9">
+			
+				<div id="tooltip" class="hidden">
+					<div>
+						<p><strong><span id="groupmember_name">**</span></strong></p>
+						<img id="groupmember_photo" class="image-photo" style="display: block; margin-left: auto; margin-right: auto";/>
+					</div>
+					<br>
+	
+				    <div class="btn-group">
+					    <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
+						    Resultados
+						    <span class="caret"></span>
+					    </a>
+					    <ul class="dropdown-menu">
+							<li id="navBullying"><a id="bullying-chart">Bullying</a></li>
+							<li id="navBullymetric"><a id="bullymetric-chart">Bullymetrica</a></li>
+							<li id="navCompetency"><a id="competency-chart">Competencias</a></li>
+							<li id="navCuentaConmigo"><a id="cuentaconmigo-chart">Cuenta Conmigo</a></li>
+					    </ul>
+				    </div>
+				    <br>
+					
+					<div id="bulletchart">
+						<h5>Bullying</h5>
+					</div>
+					<div id="radar-chart" class="hidden">
+						<h5>Evaluación por Competencias</h5>
+						<table class="table table-condensed table-bordered" >
+							<!-- <caption>Evaluación por Competencias</caption> -->
+							<thead>
+								<tr>
+									<th>Factor 1</th>
+									<th>Factor 2</th>
+									<th>Factor 3</th>
+									<th>Factor 4</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><span id="f1">*</span></td>
+									<td><span id="f2">*</span></td>
+									<td><span id="f3">*</span></td>
+									<td><span id="f4">*</span></td>
+								</tr>
+							</tbody>
+						</table>				
+					</div>
+					<div id="bullymetric" class="hidden">
+						<h5>Bullymetrica</h5>
+						<table class="table table-condensed table-bordered" >
+							<!-- <caption>Bullymetrica</caption> -->
+							<thead>
+								<tr>
+									<th>NEAP</th>
+									<th>IGAP</th>
+									<th>IMAP</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><span id="neap">*</span></td>
+									<td><span id="igap">*</span></td>
+									<td><span id="imap">*</span></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div id="cuentaconmigo" class="hidden">
+						<h5>Cuenta Conmigo</h5>
+						<g:hiddenField id= "sumCongruencia" name="sumCongruencia" value="0" />
+						<g:hiddenField id= "sumEmpatia" name="sumEmpatia" value="0" />
+						<g:hiddenField id= "sumAPI" name="sumAPI" value="0" />
+						<g:hiddenField id= "descriptionCongruencia" name="descriptionCongruencia" value="" />
+						<g:hiddenField id= "descriptionEmpatia" name="descriptionEmpatia" value="" />
+						<g:hiddenField id= "descriptionAPI" name="descriptionAPI" value="" />
+					</div>
+				</div>		
 				
-				<div id="bulletchart">
-					<h5>Bullying</h5>
+				<div style="width: 100%">
+					<div id="loading" style="float: right; width: 100%;"></div>
+					<div id="graph" style="float: right; width: 100%;"></div>
 				</div>
-				<div id="radar-chart" class="hidden">
-					<h5>Evaluación por Competencias</h5>
-					<table class="table table-condensed table-bordered" >
-						<!-- <caption>Evaluación por Competencias</caption> -->
-						<thead>
-							<tr>
-								<th>Factor 1</th>
-								<th>Factor 2</th>
-								<th>Factor 3</th>
-								<th>Factor 4</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><span id="f1">*</span></td>
-								<td><span id="f2">*</span></td>
-								<td><span id="f3">*</span></td>
-								<td><span id="f4">*</span></td>
-							</tr>
-						</tbody>
-					</table>				
-				</div>
-				<div id="bullymetric" class="hidden">
-					<h5>Bullymetrica</h5>
-					<table class="table table-condensed table-bordered" >
-						<!-- <caption>Bullymetrica</caption> -->
-						<thead>
-							<tr>
-								<th>NEAP</th>
-								<th>IGAP</th>
-								<th>IMAP</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><span id="neap">*</span></td>
-								<td><span id="igap">*</span></td>
-								<td><span id="imap">*</span></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div id="cuentaconmigo" class="hidden">
-					<h5>Cuenta Conmigo</h5>
-					<g:hiddenField id= "sumCongruencia" name="sumCongruencia" value="0" />
-					<g:hiddenField id= "sumEmpatia" name="sumEmpatia" value="0" />
-					<g:hiddenField id= "sumAPI" name="sumAPI" value="0" />
-					<g:hiddenField id= "descriptionCongruencia" name="descriptionCongruencia" value="" />
-					<g:hiddenField id= "descriptionEmpatia" name="descriptionEmpatia" value="" />
-					<g:hiddenField id= "descriptionAPI" name="descriptionAPI" value="" />
-				</div>
-			</div>		
 			
-			<div style="width: 100%">
-				<div id="loading" style="float: right; width: 80%;"></div>
-				<div id="graph" style="float: right; width: 80%;"></div>
-			</div>
+			</div> <!-- span9 -->
 			
 			<script src="${resource(dir: 'd3/js', file: 'd3-directedGraph.js')}"></script>
 			<script src="${resource(dir: 'js', file: 'jquery.json-2.4.min.js')}"></script>

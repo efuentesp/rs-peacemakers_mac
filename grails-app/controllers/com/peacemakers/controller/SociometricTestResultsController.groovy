@@ -359,18 +359,24 @@ class SociometricTestResultsController {
 		// Get User signed in
 		def subject = SecurityUtils.subject
 		def user = User.findByUsername( subject.principal )
+
+		// Get Social Group
+		def selectedSocialGroupId = params.id.toLong()
 		
+		def socialGroup = SocialGroup.get(selectedSocialGroupId)
+				
 		// Get Sociometric Test
-		def test = SociometricTest.get(params.id.toLong())
+		//def test = SociometricTest.get(params.id.toLong())
 		
 		// Get Social Group
-		def socialGroup = test.socialGroup
+		//def socialGroup = test.socialGroup
 		
 		// Set URI to call Ajax retrieve of directed graph data & URL to get photos
 		def restURI = request.forwardURI.replaceFirst('directedGraph', 'graph')
+		restURI = restURI.replaceFirst(params.id, '') // Remove last part of URI to build it in javascript
 		def photoURL = (request.getContextPath()) ? request.getContextPath()+"/groupMember/renderPhoto/" : "/groupMember/renderPhoto/"
 		
-		def selectedSocialGroupId = socialGroup.id
+		//def selectedSocialGroupId = socialGroup.id
 		// Find all Sociometric Tests assigned to the Social Group
 		def sociometricTests = SociometricTest.findAll(sort:"sequence") {
 			socialGroup.id == selectedSocialGroupId
@@ -383,7 +389,7 @@ class SociometricTestResultsController {
 			}
 		}
 
-		[socialGroup: socialGroup, sociometricTest: test, sociometricTests: sociometricTestArray, restURI: restURI, photoURL: photoURL, user: user, action: params.action]
+		[socialGroup: socialGroup, sociometricTests: sociometricTestArray, restURI: restURI, photoURL: photoURL, user: user, action: params.action]
 		
 	}
 	
