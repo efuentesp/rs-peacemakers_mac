@@ -148,9 +148,28 @@ $('input[name="type"]').change(function() {
 	//console.log($('#restURI').val() + type[0] + "?type=" + type[1]);
 
 	//console.log("Start...");
+	$('#bullyingSelect').removeAttr('disabled');
 	$("#loading").html('<img width="200" height="200" alt="Espera un momento..." src="/rs-peacemakers/static/images/spinner8.gif">');
 	d3.json($('#restURI').val() + type[0] + "?type=" + type[1], graph);
 
+});
+
+$('#bullyingSelect').change(function() {
+	var restURI = $('#restURI').val();
+	var socialGroup = $('#socialGroup').val();
+	var sociometricTestChecked = $('input[name="type"]:checked');
+	//console.log(sociometricTestChecked);
+	if (sociometricTestChecked.size()>0) {
+		var sociometricTestSelected = sociometricTestChecked.val().split(':');
+		var bullyingSelected = $('#bullyingSelect').val();
+		//console.log(socialGroup);
+		//console.log(restURI);
+		//console.log(bullyingSelected);
+		//console.log(sociometricTestSelected[1]);
+		
+		$("#loading").html('<img width="200" height="200" alt="Espera un momento..." src="/rs-peacemakers/static/images/spinner8.gif">');
+		d3.json(restURI + sociometricTestSelected[0] + "?type=" + sociometricTestSelected[1] + '&bullying=' + bullyingSelected, graph);
+	}
 });
 
 $('#bullying-chart').click(function(event){

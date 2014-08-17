@@ -299,8 +299,41 @@
 				</div>		
 				
 				<div style="width: 100%">
-					<div id="loading" style="float: right; width: 100%;"></div>
-					<div id="graph" style="float: right; width: 100%;"></div>
+					<div class="row">
+						<div id="loading" style="float: right; width: 100%;"></div>
+						<div id="graph" style="float: right; width: 100%;"></div>
+					</div>
+
+					<div class="row">
+						<div class="accordion" id="settings">
+							<div class="accordion-group">
+								<div class="accordion-heading">
+									<a class="accordion-toggle" data-toggle="collapse" data-parent="#settings" href="#collapseSettings">
+										<i class="icon-cog"></i> Configurar
+									</a>
+								</div>
+								<div id="collapseSettings" class="accordion-body collapse">
+									<div class="accordion-inner">
+									
+										<g:form class="form-horizontal">
+											<div class="control-group">
+												<label class="control-label" for="bullyingSelect">Bullying</label>
+												<div class="controls">
+													<select id="bullyingSelect" disabled>
+														<g:each in="${bullyingArray}" var="bullying">
+															<option value="${bullying.id}" selected>Votación ${bullying.sequence}</option>
+														</g:each>
+													</select>
+												</div>
+											</div>
+										</g:form>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> <!-- row -->
+
 				</div>
 			
 			</div> <!-- span9 -->

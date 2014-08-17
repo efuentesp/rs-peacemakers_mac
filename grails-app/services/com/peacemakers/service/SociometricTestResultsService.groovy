@@ -93,20 +93,28 @@ class SociometricTestResultsService {
 		return [detail: groupMemberArray, summary: criteriaResponseResults]
     }
 	
-	def buildGraph(Long sociometricTestId, String type, Map sociometricResults) {
+	def buildGraph(Long sociometricTestId, String type, Map sociometricResults, def bullying=null) {
 		println ("+++ buildGraph: ${sociometricResults}")
 		
 		def maxPercentage = 30
 		
 		def g = new ValidationTagLib()
 		
-		// Build soiciometric test result
+		// Build sociometric test result
 		def results = []
 		//println "g: ${sociometricResults}"
 		sociometricResults.sociometricTestResults.each { c->
-			//println "c: ${c.criteria.code}"
+			//println "c: ${c}"
 			if (c.criteria.code == "bullying") {
 				def t = c.tests[c.tests.size()-1]
+				println("t="+t)
+				if (bullying) {
+					c.tests.each { x->
+						if (x.test.id == bullying.toLong()) {
+							t = x
+						}
+					}
+				}
 				//c.tests.each { t->
 					//println "t: ${t.test}"
 					t.results.each { m->
