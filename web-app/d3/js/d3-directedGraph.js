@@ -148,6 +148,8 @@ $('input[name="type"]').change(function() {
 	//console.log($('#restURI').val() + type[0] + "?type=" + type[1]);
 
 	//console.log("Start...");
+	$('#searchStudent').removeAttr('disabled');
+	$('#searchButton').removeAttr('disabled');
 	$('#bullyingSelect').removeAttr('disabled');
 	$("#loading").html('<img width="200" height="200" alt="Espera un momento..." src="/rs-peacemakers/static/images/spinner8.gif">');
 	d3.json($('#restURI').val() + type[0] + "?type=" + type[1], graph);
@@ -170,6 +172,26 @@ $('#bullyingSelect').change(function() {
 		$("#loading").html('<img width="200" height="200" alt="Espera un momento..." src="/rs-peacemakers/static/images/spinner8.gif">');
 		d3.json(restURI + sociometricTestSelected[0] + "?type=" + sociometricTestSelected[1] + '&bullying=' + bullyingSelected, graph);
 	}
+});
+
+$('#searchButton').click(function(event) {
+	var studentName = $('#searchStudent').val();
+	//console.log(studentName);
+	
+	d3.selectAll("circle.node")
+	.filter(function(d) {
+		//console.log(d.id.toString());
+		if (studentName == d.name) {
+			//console.log("found: " + d);
+			return true;
+		}
+		return false;
+	})
+	.transition()
+		.duration(250)
+	.attr("r", 18)
+	.style("stroke-width", 6)
+	.style("stroke", "#398FBD");
 });
 
 $('#bullying-chart').click(function(event){
@@ -593,6 +615,8 @@ function graph(json) {
 			//.style("stroke", "Black")
 			.style("stroke", function(d) { if (d.result) return d.result.color; else return "Black"; })
 			.style("stroke-width", 3)
+			.append("title") // Add a hint with the Student's name
+			.text(function(d){ return d.name; })
 			.call(force.drag);
 		
 		node.append("text")

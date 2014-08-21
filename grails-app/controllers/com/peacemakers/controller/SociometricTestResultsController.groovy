@@ -391,8 +391,13 @@ class SociometricTestResultsController {
 				bullyingArray << sociometricTest
 			}
 		}
+		
+		def students = []
+		socialGroup.groupMembers.each { m->
+			students << m.getFullName()
+		}
 
-		[socialGroup: socialGroup, sociometricTests: sociometricTestArray, bullyingArray: bullyingArray, restURI: restURI, photoURL: photoURL, user: user, action: params.action]
+		[socialGroup: socialGroup, sociometricTests: sociometricTestArray, bullyingArray: bullyingArray, restURI: restURI, photoURL: photoURL, user: user, students: students as JSON, action: params.action]
 		
 	}
 	

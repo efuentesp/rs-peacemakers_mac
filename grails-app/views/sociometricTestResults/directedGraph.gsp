@@ -296,9 +296,19 @@
 						<g:hiddenField id= "descriptionEmpatia" name="descriptionEmpatia" value="" />
 						<g:hiddenField id= "descriptionAPI" name="descriptionAPI" value="" />
 					</div>
-				</div>		
+				</div>
 				
 				<div style="width: 100%">
+					<div class="row">
+						<div class="form-search">
+							<input 	id="searchStudent" type="text" class="input-large"
+									name="student" required="" value="" autocomplete='off'
+									data-provide="typeahead" data-items="4"
+									data-source='${students}' disabled>
+							<button id="searchButton" class="btn" disabled><i class="icon-search"></i></button>
+						</div>
+					</div>
+				
 					<div class="row">
 						<div id="loading" style="float: right; width: 100%;"></div>
 						<div id="graph" style="float: right; width: 100%;"></div>
