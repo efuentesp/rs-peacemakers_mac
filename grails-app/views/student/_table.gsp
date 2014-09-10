@@ -19,31 +19,30 @@
 								<h4>${groupMemberBean.getFullName()}</h4>
 							</div>					
 							<div id="vote${groupMemberBean.id}" class="student-vote">
-								<g:if test="${sociometricTest.resultOption}">
-								<g:each in="${sociometricCriteriaResponseList}" var="sociometricCriteriaResponse">
-									<label>
-										<input type="radio" name="vote.${groupMemberBean.id}" id="sociometricCriteriaResponse${sociometricCriteriaResponse.sequence}" value="${sociometricCriteriaResponse.id}">
-										<g:message code="${sociometricCriteriaResponse.question}" default="${sociometricCriteriaResponse.question}"/>
-									</label>								
-								</g:each>
+								<g:if test="${sociometricTest.sociometricCriteria.code in ['bullying']}">
+									<select name="voteSelected.${groupMemberBean.id}">
+										<option value="-1"></option>
+										<g:each in="${sociometricCriteriaResponseList}" var="sociometricCriteriaResponse">
+											<optgroup label="${message(code: sociometricCriteriaResponse.question, default: sociometricCriteriaResponse.question)}">
+												<g:each in="${sociometricCriteriaResponse.option.sort {it.sequence}}" var="sociometricCriteriaResponseOption">
+													<option value="${sociometricCriteriaResponse.id}|${sociometricCriteriaResponseOption.id}">${sociometricCriteriaResponseOption.question}</option>
+												</g:each>
+											</optgroup>
+										</g:each>
+									</select>
 								</g:if>
 								<g:else>
-								<select name="voteSelected.${groupMemberBean.id}">
-									<option value="-1"></option>
 									<g:each in="${sociometricCriteriaResponseList}" var="sociometricCriteriaResponse">
-										<optgroup label="${message(code: sociometricCriteriaResponse.question, default: sociometricCriteriaResponse.question)}">
-											<g:each in="${sociometricCriteriaResponse.option.sort {it.sequence}}" var="sociometricCriteriaResponseOption">
-												<option value="${sociometricCriteriaResponse.id}|${sociometricCriteriaResponseOption.id}">${sociometricCriteriaResponseOption.question}</option>
-											</g:each>
-										</optgroup>
+										<label>
+											<input type="radio" name="vote.${groupMemberBean.id}" id="sociometricCriteriaResponse${sociometricCriteriaResponse.sequence}" value="${sociometricCriteriaResponse.id}">
+											<g:message code="${sociometricCriteriaResponse.question}" default="${sociometricCriteriaResponse.question}"/>
+										</label>								
 									</g:each>
-								</select>
-								</g:else>
-								
-								<a id="reset" class="btn btn-warning btn-mini" onclick="reset(${groupMemberBean.id})">
-									<i class="icon-remove icon-white"></i>
-									<g:message code="sociometriccriteria.button.reset.label" default="Reset"/>
-								</a>													
+									<a id="reset" class="btn btn-warning btn-mini" onclick="reset(${groupMemberBean.id})">
+										<i class="icon-remove icon-white"></i>
+										<g:message code="sociometriccriteria.button.reset.label" default="Reset"/>
+									</a>
+								</g:else>													
 							</div>
 						</div>
 					</li>
